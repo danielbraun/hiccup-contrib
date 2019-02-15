@@ -2,14 +2,16 @@
 
 (defn table
   ([coll] (table {} coll))
-  ([attrs coll]
-   (let [columns (->> coll first (map first))]
-     [:table attrs
-      [:thead
+  ([{:keys [render-cell columns]
+     :or {render-cell (fn [v _ _] [:td v])
+          columns (->> coll first (map first))}
+     :as attrs} coll]
+   [:table (dissoc attrs :render-cell :columns)
+    [:thead
+     [:tr
+      (for [col columns]
+        [:th {} col])]]
+    [:tbody
+     (for [row (map (partial into {}) coll)]
        [:tr
-        (for [col columns]
-          [:th {} col])]]
-      [:tbody
-       (for [row (map (partial into {}) coll)]
-         [:tr
-          (for [col columns] [:td {} (get row col)])])]])))
+        (for [col columns] (render-cell (get row col) col row coll))])]]))
