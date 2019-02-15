@@ -1,0 +1,1 @@
+{:deps {com.taoensso/tower {:mvn/version "3.0.2"}}}
