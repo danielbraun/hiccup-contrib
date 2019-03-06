@@ -3,7 +3,7 @@
 (defn table
   ([coll] (table {} coll))
   ([{:keys [render-cell columns]
-     :or {render-cell (fn [v _ _] [:td v])
+     :or {render-cell (fn [v _ _ _] [:td v])
           columns (->> coll first (map first))}
      :as attrs} coll]
    [:table (dissoc attrs :render-cell :columns)
